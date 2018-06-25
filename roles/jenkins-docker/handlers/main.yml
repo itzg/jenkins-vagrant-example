@@ -1,0 +1,10 @@
+- name: restart jenkins
+  service:
+    name: jenkins
+    state: restarted
+    ignore_errors: yes
+- name: restart jenkins agent
+  service:
+    name: jenkins-agent
+    state: restarted
+    ignore_errors: yes

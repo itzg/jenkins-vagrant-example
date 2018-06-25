@@ -1,0 +1,5 @@
+- name: install node config script
+  template:
+    src: register-agents.groovy.j2
+    dest: "{{ jenkins_home }}/init.groovy.d/register-agents.groovy"
+  notify: restart jenkins

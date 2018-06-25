@@ -1,0 +1,4 @@
+jenkins_master_url: http://{{hostvars['jenkins-master']['ansible_enp0s8']['ipv4']['address']}}:8080
+jenkins_admin_user: admin
+jenkins_admin_password: admin
+jenkins_agent_basedir: /var/jenkins

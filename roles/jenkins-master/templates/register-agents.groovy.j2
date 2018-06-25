@@ -1,0 +1,24 @@
+import hudson.model.*
+import jenkins.model.*
+import hudson.slaves.*
+import hudson.slaves.EnvironmentVariablesNodeProperty.Entry
+
+def nodeNames = [{% for h in groups['jenkins-slave'] %}  "{{h}}" {% if not loop.last %},{% endif %} {% endfor %} ]
+
+nodeNames.each {
+    if (!Jenkins.instance.getNode(it)) {
+        Slave agent = new DumbSlave(
+            it,
+            "/var/jenkins",
+            null)
+        agent.nodeDescription = "Agent node description"
+        agent.numExecutors = {{ jenkins_executors_per_node }}
+        agent.labelString = it
+        agent.mode = Node.Mode.NORMAL
+        agent.retentionStrategy = new RetentionStrategy.Always()
+
+        Jenkins.instance.addNode(agent)
+    }
+}
+
+return "Nodes have been created successfully."

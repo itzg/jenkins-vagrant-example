@@ -1,0 +1,4 @@
+- name: restart jenkins agent
+  service:
+    name: jenkins-agent
+    state: restarted

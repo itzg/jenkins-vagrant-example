@@ -1,0 +1,8 @@
+- name: give docker access to jenkins
+  user:
+    append: yes
+    name: jenkins
+    groups: docker
+  notify:
+    - restart jenkins
+    - restart jenkins agent

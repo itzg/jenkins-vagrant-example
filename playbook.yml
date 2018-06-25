@@ -1,0 +1,22 @@
+- hosts: all
+  become: yes
+  roles:
+    - geerlingguy.docker
+    - geerlingguy.java
+- hosts: jenkins-master
+  become: yes
+  vars:
+    jenkins_plugins:
+      - workflow-aggregator
+      - docker-workflow
+  roles:
+    - geerlingguy.jenkins
+    - jenkins-master
+- hosts: jenkins-slave
+  become: yes
+  roles:
+    - jenkins-slave
+- hosts: all
+  become: yes
+  roles:
+    - jenkins-docker

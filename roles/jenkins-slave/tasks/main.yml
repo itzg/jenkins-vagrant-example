@@ -1,0 +1,28 @@
+- name: create jenkins user and storage
+  user:
+    name: jenkins
+    home: "{{jenkins_agent_basedir}}"
+    create_home: yes
+    shell: /bin/bash
+- name: check for jenkins up
+  uri:
+    url: "{{jenkins_master_url}}"
+  # retry this task since jenkins may have just been restarted before this task runs
+  register: result
+  until: result.status == 200
+  retries: 6
+  delay: 10
+- name: get jenkins agent jar
+  become_user: jenkins
+  get_url:
+    url: "{{jenkins_master_url}}/jnlpJars/agent.jar"
+    dest: "{{jenkins_agent_basedir}}/agent.jar"
+- name: install service
+  template:
+    dest: /etc/systemd/system/jenkins-agent.service
+    src: jenkins-agent.service.j2
+- name: setup service
+  systemd:
+    daemon_reload: yes
+    name: jenkins-agent
+    state: started

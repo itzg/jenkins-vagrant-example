@@ -1,0 +1,11 @@
+[Unit]
+Description=Jenkins Slave Node
+
+[Service]
+ExecStart=/usr/bin/java -jar {{ jenkins_agent_basedir }}/agent.jar \
+  -jnlpUrl {{ jenkins_master_url }}/computer/{{ inventory_hostname }}/slave-agent.jnlp \
+  -jnlpCredentials {{ jenkins_admin_user }}:{{ jenkins_admin_password }}
+User=jenkins
+
+[Install]
+WantedBy=multi-user.target
