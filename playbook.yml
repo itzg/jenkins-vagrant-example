@@ -9,6 +9,7 @@
     jenkins_plugins:
       - workflow-aggregator
       - docker-workflow
+      - git
   roles:
     - geerlingguy.jenkins
     - jenkins-master
